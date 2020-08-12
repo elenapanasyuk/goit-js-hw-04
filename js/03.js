@@ -1,99 +1,41 @@
-/*Поиск наибольшего значения среди свойств объекта
+/*Callback функция для получения одного вычисляемого значения массива
+Функции add, sub и mult принимают два параметра - accum и element, возвращает число - сумму, разность или произведение параметров.
 
-Напиши функцию findBestEmployee(employees), которая принимает объект сотрудников и возвращает имя самого продуктивного(который выполнил больше всех задач).
-Сотрудники и кол - во выполненных задач содержатся как свойства объекта в формате "имя": "кол-во задач". */
+Дополни тело функции reduceArray строкой присвоения accum вызова функции cb.
+Функция reduceArray должна будет подсчитать сумму или разность или произведение всех элементов массива в зависимости 
+от того какая именно из трех функция(add, mult, sub) будет передана в качестве cb. */
 
-const findBestEmployee = function (employees) {
+const add = (accum, element) => accum + element;
+const mult = (accum, element) => accum * element;
+const sub = (accum, element) => accum - element;
+
+function reduceArray(array, cb, initial) {
   'use strict';
-  // const keys = Object.keys(developers);
-  // let maxValue = 0;
-  // let nameBestEmployee = '';
-  // for (key of keys) {
-  //   if (array[keys] > maxValue) {
-  //     nameBestEmployee = key;
-  //   }
-  // }
-  // return nameBestEmployee;
-  const findBestEmployee = function (employees) {
-    'use strict';
+  let i;
+  let accum;
+  if (arguments.length >= 3) {
+    accum = initial;
+    i = 0;
+  }
+  if (arguments.length === 2) {
+    accum = array[0];
+    i = 1;
+  }
+  for (i; i < array.length; i += 1) {
+    const element = array[i];
     // Write code under this line
-    const entries = Object.entries(employees);
-    let maxValue = 0;
-    let nameBestEmployee = '';
-    for (const entry of entries) {
-      const key = entry[0];
-      const value = entry[1];
-
-      if (value > maxValue) {
-        maxValue = value;
-        nameBestEmployee = key;
-      }
-    }
-    return nameBestEmployee;
-  };
-
-///С деструктуризацией
-  
-  /*
-  const findBestEmployee = function (employees) {
-  'use strict';
-  // Write code under this line
-  const entries = Object.entries(employees);
-  let maxValue = 0;
-  let nameBestEmployee = '';
-  for (const [key, value] of entries) {
-
-    if (value > maxValue) {
-      maxValue = value;
-      nameBestEmployee = key;
-    }
+    accum = cb(accum, element);
   }
-  return nameBestEmployee;
-  */
-  
-  /* C Object.keys
-  
-const findBestEmployee = function (employees) {
-  'use strict';
-  // Write code under this line
-  const names = Object.keys(employees);
-  let maxValue = 0;
-  let nameBestEmployee = '';
+  return accum;
+}
 
-  for (const name of names) {
+const arr = [1, 2, 3, 4, 5];
 
-    if (employees[name] > maxValue) {
-      maxValue = employees[name];
-      nameBestEmployee = name;
-    }
-  }
-  return nameBestEmployee;
-};
-  */
+console.log(reduceArray(arr, add)); // 15
+console.log(reduceArray(arr, add, 10)); // 25
 
-// Объекты и ожидаемый результат
-const developers = {
-  ann: 29,
-  david: 35,
-  helen: 1,
-  lorence: 99,
-};
-console.log(findBestEmployee(developers));
-// 'lorence'
+console.log(reduceArray(arr, mult)); // 120
+console.log(reduceArray(arr, mult, 10)); // 1200
 
-const supports = {
-  poly: 12,
-  mango: 17,
-  ajax: 4,
-};
-//console.log(findBestEmployee(supports));
-// 'mango'
-
-const sellers = {
-  lux: 147,
-  david: 21,
-  kiwi: 19,
-  chelsy: 38,
-};
-//console.log(findBestEmployee(sellers));
-// 'lux'
+console.log(reduceArray(arr, sub)); // -13
+console.log(reduceArray(arr, sub, 10)); // -5
